@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { Josefin_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import AuthProvider from "@/context/AuthProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const josefinSans = Josefin_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Youtube Downloader",
+  title: "Easy Downloader",
   description:
     "This is a video downloader, which can be used to download videos from internet with a link to the video",
 };
@@ -19,15 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={josefinSans.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToggle />
-          {children}
+          <AuthProvider>
+            <ThemeToggle />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
