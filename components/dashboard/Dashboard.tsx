@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
   const { data: session } = useSession();

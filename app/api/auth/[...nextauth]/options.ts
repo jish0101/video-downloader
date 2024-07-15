@@ -1,14 +1,14 @@
 import config from "@/lib/config";
 import { AuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   providers: [
-    GithubProvider({
-      clientId: config.GITHUB_CLIENT_ID,
-      clientSecret: config.GITHUB_CLIENT_SEC,
-    }),
+    // Uncomment if using GitHub authentication
+    // GithubProvider({
+    //   clientId: config.GITHUB_CLIENT_ID,
+    //   clientSecret: config.GITHUB_CLIENT_SEC,
+    // }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -24,18 +24,22 @@ export const authOptions: AuthOptions = {
         },
       },
       authorize: async (credentials) => {
-        // csrfToken
-        if (credentials?.email) {
-          return new Promise((res) =>
-            res({
+        try {
+          if (credentials?.email && credentials?.password) {
+            return {
               id: "1",
               email: credentials.email,
-            })
-          );
+            };
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.error("Authorize error:", error);
+          return null;
         }
-        return null;
       },
     }),
   ],
-  secret: config.NEXTAUTH_SECRET,
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
